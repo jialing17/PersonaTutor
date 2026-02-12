@@ -1,0 +1,33 @@
+<<<<<<< HEAD
+openai
+python-dotenv
+langchain-community
+langchain-text-splitters
+langchain-openai
+chromadb
+pypdf
+langchain-huggingface
+sentence-transformers
+langchain-chroma
+pymupdf
+groq
+docling
+streamlit
+libsql-client
+=======
+openai
+python-dotenv
+langchain-community
+langchain-text-splitters
+langchain-openai
+chromadb
+pypdf
+langchain-huggingface
+sentence-transformers
+langchain-chroma
+pymupdf
+groq
+docling
+streamlit
+libsql-client
+>>>>>>> 6ac9ddb (Initial commit with LFS databases)

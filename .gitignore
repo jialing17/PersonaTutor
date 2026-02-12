@@ -1,0 +1,47 @@
+# --- Python Clutter ---
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+.env
+
+# --- Streamlit & System ---
+.streamlit/
+.DS_Store
+Thumbs.db
+
+# --- Large Files & Databases ---
+# If you decide NOT to use LFS for these, ignore them here:
+db_ai_modern/
+db_ai_v2/
+db_compsystem/
+# db_all/
+# *.pdf
+
+# --- Checkpoints & Logs ---
+ingestion_checkpoint_all.txt
+ingestion_checkpoint_modern.txt
+ingestion_checkpoint_v2.txt
+stability_raw_log.csv
+stability_results.txt
+ingestion_checkpoint_ai_modern.txt
+ingestion_checkpoint.txt
+*.log
+
+# --- ingest 
+ingest_ai_modern.py
+ingest_ai_v2.py
+ingest_ai_all.py
+ingest_docling.py
+ingest.py
+test_ingest.py
+ingest_all.py
+
+#--- other codes
+try api.py
+stability_test.py
+archive/
+data/
+
