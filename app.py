@@ -105,7 +105,7 @@ if prompt := st.chat_input("Enter your question here..."):
             st.error(error_msg)
             
             # Fallback text so the app doesn't break
-            final_response = "I encountered a connection error. Please try sending your message again."
+            final_response = f"I encountered a connection error. Please try sending your message again. \nError details: {str(e)}" 
 
     with st.chat_message("assistant"):
         st.markdown(final_response)
