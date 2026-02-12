@@ -8,7 +8,7 @@ venv/
 .env
 
 # --- Streamlit & System ---
-.streamlit/
+# .streamlit/
 .DS_Store
 Thumbs.db
 
