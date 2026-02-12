@@ -8,6 +8,8 @@ import os
 
 try:
     API_KEY = st.secrets["DEEPSEEK_API_KEY"]
+    if not API_KEY:
+        raise ValueError("Secret is empty")
     BASE_URL = "https://api.deepseek.com"
     MODEL_NAME = "deepseek-chat" 
 except Exception:
