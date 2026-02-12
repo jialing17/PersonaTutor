@@ -338,7 +338,8 @@ if __name__ == "__main__":
         student_input = input("Student: ")
         if student_input.lower() in ["exit"]:
             break
-
+        
+        print("Thinking...\n")
         # Step 1: Understanding (Uses Raw History)
         resultQU = qu_agent.analyze_student_input(student_input, history=current_history)
         print(f" QU Result: {resultQU}")
