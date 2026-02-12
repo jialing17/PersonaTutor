@@ -85,19 +85,21 @@ if prompt := st.chat_input("Enter your question here..."):
     with st.spinner("PersonaTutor is thinking..."):
         try:
             resultQU = qu_agent.analyze_student_input(prompt, history=st.session_state.messages)
+
+            final_response =resultQU
             
-            old_profile = st.session_state.current_profile.copy()
-            st.session_state.current_profile = sm_agent.update_student_model(
-                current_profile_json=old_profile, 
-                latest_analysis_json=resultQU
-            )
+            # old_profile = st.session_state.current_profile.copy()
+            # st.session_state.current_profile = sm_agent.update_student_model(
+            #     current_profile_json=old_profile, 
+            #     latest_analysis_json=resultQU
+            # )
             
-            strategy_result = sf_agent.formulate_strategy(resultQU, st.session_state.current_profile)
+            # strategy_result = sf_agent.formulate_strategy(resultQU, st.session_state.current_profile)
             
-            final_response = qg_agent.generate_grounded_question(
-                strategy_result, 
-                resultQU.get('core_issue', 'General Concept')
-            )
+            # final_response = qg_agent.generate_grounded_question(
+            #     strategy_result, 
+            #     resultQU.get('core_issue', 'General Concept')
+            # )
 
         except Exception as e:
             # display api error when encounter one
