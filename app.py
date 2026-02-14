@@ -1,5 +1,5 @@
 import streamlit as st
-from database import init_db, verify_user, create_user, get_chat_history, save_chat_message
+from database import init_db, save_complete_turn, verify_user, create_user, get_chat_history, save_chat_message
 from agent import QuestionUnderstandingAgent, StudentModelingAgent, StrategyFormulationAgent, QuestionGenerationAgent
 
 @st.cache_resource
@@ -85,35 +85,40 @@ if prompt := st.chat_input("Enter your question here..."):
     with st.spinner("PersonaTutor is thinking..."):
         try:
             resultQU = qu_agent.analyze_student_input(prompt, history=st.session_state.messages)
-
-            # final_response =resultQU
             
             old_profile = st.session_state.current_profile.copy()
-            st.session_state.current_profile = sm_agent.update_student_model(
+            updated_profile = sm_agent.update_student_model(
                 current_profile_json=old_profile, 
                 latest_analysis_json=resultQU
             )
             
-            strategy_result = sf_agent.formulate_strategy(resultQU, st.session_state.current_profile)
+            strategy_result = sf_agent.formulate_strategy(resultQU, updated_profile)
             
             final_response = qg_agent.generate_grounded_question(
                 strategy_result, 
-                resultQU.get('core_issue', 'General Concept')
+                resultQU.get('core_issue', 'General Concept') # fallback to a default category if core_issue is missing
             )
 
+            # save to database
+            save_complete_turn(
+                username=st.session_state.username,
+                student_input=prompt,
+                qu_data=resultQU,
+                sm_data=updated_profile,
+                sf_data=strategy_result,
+                tutor_output=final_response
+            )
+
+            # output it
+            st.session_state.current_profile = updated_profile
+            st.session_state.messages.append({"role": "user", "content": prompt})
+            st.session_state.messages.append({"role": "assistant", "content": final_response})
+
         except Exception as e:
-            # display api error when encounter one
-            error_msg = f"API error: {str(e)}"
-            st.error(error_msg)
-            
-            # Fallback text so the app doesn't break
-            final_response = f"I encountered a connection error. Please try sending your message again. \nError details: {str(e)}" 
+            st.error(f"API error: {str(e)}")
+            final_response = f"I encountered a connection error. API error: {e}. Please try again." 
 
     with st.chat_message("assistant"):
         st.markdown(final_response)
-    
-    # to do save to database
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    st.session_state.messages.append({"role": "assistant", "content": final_response})
     
     st.rerun()

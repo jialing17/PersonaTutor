@@ -28,6 +28,7 @@ stability_raw_log.csv
 stability_results.txt
 ingestion_checkpoint_ai_modern.txt
 ingestion_checkpoint.txt
+ingestion_checkpoint_game.txt
 *.log
 
 # --- ingest 
@@ -38,6 +39,7 @@ ingest_docling.py
 ingest.py
 test_ingest.py
 ingest_all.py
+ingest_game.py
 
 #--- other codes
 try api.py
@@ -45,3 +47,4 @@ stability_test.py
 archive/
 data/
 
+"ingest_game.py" 

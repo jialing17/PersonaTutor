@@ -66,7 +66,6 @@ class QuestionUnderstandingAgent:
 
         # messages.extend(recent_context)
         
-        # Explicitly mention JSON to satisfy API requirements
         user_prompt = f"""
         --- RECENT CONTEXT ---
         {json.dumps(recent_context)}
@@ -93,7 +92,6 @@ class QuestionUnderstandingAgent:
             response_format={"type": "json_object"}
         )
 
-        # Content is always in choices[0].message.content for the OpenAI/DeepSeek SDK
         return safe_json_parse(response.choices[0].message.content)
 
 
@@ -311,6 +309,7 @@ class QuestionGenerationAgent:
             return f"API Error: {e}"
 
 
+# for local testing without Streamlit
 if __name__ == "__main__":
     # 1. Initialize Agents
     qu_agent = QuestionUnderstandingAgent()
