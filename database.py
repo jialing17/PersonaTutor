@@ -43,8 +43,11 @@ def query_turso(sql, params=None):
 
 def init_db():
     query_turso("CREATE TABLE IF NOT EXISTS users (username TEXT PRIMARY KEY, password TEXT)")
-    query_turso("CREATE TABLE IF NOT EXISTS history (id INTEGER PRIMARY KEY, username TEXT, role TEXT, content TEXT, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)")
-    query_turso("CREATE INDEX IF NOT EXISTS users_profile ON history(username)")
+    query_turso("CREATE TABLE IF NOT EXISTS history (username TEXT, role TEXT, content TEXT, turn_id INTEGER)")
+    query_turso("CREATE TABLE IF NOT EXISTS qu_history (username TEXT, turn_id INTEGER, qu_result_json TEXT)")
+    query_turso("CREATE TABLE IF NOT EXISTS sm_history (username TEXT, turn_id INTEGER, sm_result_json TEXT)")
+    query_turso("CREATE TABLE IF NOT EXISTS sf_history (username TEXT, turn_id INTEGER, sf_result_json TEXT)")
+    query_turso("CREATE TABLE IF NOT EXISTS student_profile (username TEXT PRIMARY KEY, current_profile_json TEXT)");
 
 def verify_user(username, password):
     resp = query_turso("SELECT * FROM users WHERE username=? AND password=?", [username, password])
@@ -131,8 +134,15 @@ def save_complete_turn(username, student_input, qu_data, sm_data, sf_data, tutor
     
     for sql, params in sql_statements:
         resp = query_turso(sql, params)
-        if not resp or resp.get("results", [{}])[0].get("type") == "error":
-            print(f"Warning: Failed execution for {username} on statement: {sql}")
+        try:
+            results = resp.get("results", [])
+            if not results or results[0].get("type") == "error":
+                error_msg = results[0].get("error", {}).get("message", "Unknown Error")
+                print(f"Turso Error: {error_msg} | Statement: {sql}")
+            else:
+                print(f"Successfully saved to {sql.split()[2]}")
+        except Exception as e:
+            print(f"Failed calling Turso: {e}")
             
     return turn_id
 
