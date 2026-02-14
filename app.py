@@ -1,5 +1,5 @@
 import streamlit as st
-from database import init_db, save_complete_turn, verify_user, create_user, get_chat_history, save_chat_message
+from database import init_db, save_complete_turn, verify_user, create_user, get_chat_history, load_chat_history, load_student_profile
 from agent import QuestionUnderstandingAgent, StudentModelingAgent, StrategyFormulationAgent, QuestionGenerationAgent
 
 @st.cache_resource
@@ -17,16 +17,15 @@ if "db_initialized" not in st.session_state:
     init_db()
     st.session_state.db_initialized = True
 
-# --- 1. GLOBAL INITIALIZATION ---
+# --- INITIALIZATION ---
 if "messages" not in st.session_state:
-    st.session_state.messages = []
+    st.session_state.messages = load_chat_history(st.session_state.username)
+    
+if "current_profile" not in st.session_state:
+    st.session_state.current_profile = load_student_profile(st.session_state.username)
 
 if "username" not in st.session_state:
     st.session_state.username = None
-
-if "current_profile" not in st.session_state:
-    st.session_state.current_profile = {"need_more_guidance": "Yes", "mastery_level": 0.0}
-
 
 # login logic
 if st.session_state.username is None:
