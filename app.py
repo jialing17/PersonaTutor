@@ -18,12 +18,6 @@ if "db_initialized" not in st.session_state:
     st.session_state.db_initialized = True
 
 # --- INITIALIZATION ---
-if "messages" not in st.session_state:
-    st.session_state.messages = load_chat_history(st.session_state.username)
-    
-if "current_profile" not in st.session_state:
-    st.session_state.current_profile = load_student_profile(st.session_state.username)
-
 if "username" not in st.session_state:
     st.session_state.username = None
 
@@ -60,6 +54,12 @@ if st.session_state.username is None:
                 st.warning("Please fill in both fields.")
     
     st.stop()
+
+if "messages" not in st.session_state:
+    st.session_state.messages = load_chat_history(st.session_state.username)
+    
+if "current_profile" not in st.session_state:
+    st.session_state.current_profile = load_student_profile(st.session_state.username)
 
 # after login 
 st.sidebar.title("Dashboard")
