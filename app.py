@@ -1,7 +1,7 @@
 import streamlit as st
 from database import init_db, save_complete_turn, verify_user, create_user, get_chat_history, load_chat_history, load_student_profile
 from agent import QuestionUnderstandingAgent, StudentModelingAgent, StrategyFormulationAgent, QuestionGenerationAgent
-
+init_db()
 @st.cache_resource
 def init_agents():
     return (
