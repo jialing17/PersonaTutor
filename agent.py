@@ -289,7 +289,7 @@ class QuestionGenerationAgent:
                     {"role": "system", "content": QG_SYSTEM_PROMPT},
                     {"role": "user", "content": user_content}
                 ],
-                temperature=0.3 
+                temperature=0.1 
             )
             return response.choices[0].message.content
         except Exception as e:
