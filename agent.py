@@ -112,7 +112,7 @@ class StudentModelingAgent:
 
         if old_mastery == 0.0:
             # print("initializing mastery based on category...")
-            baselines = {"Concept": 0.15, "Procedure": 0.30, "Next-step": 0.60}
+            baselines = {"Concept": 0.25, "Procedure": 0.40, "Next-step": 0.60}
             old_mastery = baselines.get(category, 0.15)
 
         # print(f"\n[StudentModelingAgent] Old Mastery: {old_mastery}, guidance: {current_profile_json.get('need_more_guidance', 'Yes')}, emotion: {emotion}")
