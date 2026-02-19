@@ -184,18 +184,9 @@ class StrategyFormulationAgent:
         messages = [{"role": "system", "content": self.system_prompt}]
         messages.extend(SF_FEW_SHOT_EXAMPLES)
         
-        analysis_summary = f"mastery_level: {student_state['mastery_level']}, Guidance: {student_state['need_more_guidance']}, difficulty_category: {analysis_result['difficulty_category']},"
+        analysis_summary = f"mastery_level: {student_state['mastery_level']}, Guidance: {student_state['need_more_guidance']}, difficulty_category: {analysis_result['difficulty_category']}, Issue: '{analysis_result['core_issue']}'"
 
-        # Simplified context passing
-        user_prompt = f"""
-        ANALYSIS: {analysis_summary}
-
-        Based on the Strategy Mapping Rules:
-        1. Select the 'strategy_type' (Clarification, Reasoning Probe, Step-Probing, Next-step Guidance).
-        2. Select the 'instructional_style' (Scaffolded vs Reflective).
-        
-        Return JSON including: 'strategy_type', 'instructional_style'
-        """
+        user_prompt = f"ANALYSIS: {analysis_summary}"
         messages.append({"role": "user", "content": user_prompt})
 
         for attempt in range(3): # Try 3 times
@@ -215,24 +206,25 @@ class StrategyFormulationAgent:
                 else:
                     print(f"API error: {e}")
                     # standard return on failure
-                    return {"strategy_type": "Clarification", "instructional_style": "Scaffolded"}
+                    return {
+                        "strategy_type": "Clarification",
+                        "instructional_style": "Strategic Hints",
+                        "strategy_steps": ["Ask the student to clarify their thought process."]
+                    }
 
 
 
 class QuestionGenerationAgent:
-    def __init__(self, vectorstore_folders=["db_all", "db_ai"]):
+    def __init__(self, vectorstore_folders=["db_all", "db_ai", "db_game", "db_psy"]):
         print("Initializing RAG System (Agent 4)...", end=" ", flush=True)
         try:
-            # 1. Path Safety for Streamlit Cloud / Linux
-            # Find the directory where this script is located
             current_dir = os.path.dirname(os.path.abspath(__file__))
             
-            # 2. Load the embedding model FIRST
             self.embedding_model = HuggingFaceEmbeddings(
                 model_name="sentence-transformers/all-mpnet-base-v2"
             )
 
-            # 3. Load all vectorstores into a list
+            # load all vectorstores into a list
             self.vectorstores = []
             for folder in vectorstore_folders:
                 full_path = os.path.join(current_dir, folder)
@@ -246,7 +238,6 @@ class QuestionGenerationAgent:
                 else:
                     print(f"\n[WARNING] Folder not found: {full_path}")
             
-            # 4. Setup Client
             self.client = OpenAI(api_key=API_KEY, base_url=BASE_URL)
             self.model = MODEL_NAME
             
@@ -255,43 +246,39 @@ class QuestionGenerationAgent:
             print(f"\n[ERROR] Initialization failed: {e}")
 
     def _retrieve_combined_context(self, query, k_per_db=2):
-        """Internal helper to gather context from all loaded databases."""
         all_context_segments = []
         
         for vs in self.vectorstores:
             try:
-                # Retrieve top k segments from each database
-                docs = vs.similarity_search(query, k=k_per_db)
-                for doc in docs:
-                    # Optional: Add metadata source to help the LLM
-                    source = doc.metadata.get('source', 'Textbook')
-                    all_context_segments.append(f"[{source}]: {doc.page_content}")
+                docs_with_scores = vs.similarity_search_with_score(query, k=k_per_db)
+                # lower btr 
+                for doc, score in docs_with_scores:
+                    if score < 0.6: 
+                        source = doc.metadata.get('source', 'Textbook')
+                        all_context_segments.append(f"[{source}]: {doc.page_content}")
+                        
             except Exception as e:
                 print(f"Search failed for a vectorstore: {e}")
                 
         return "\n\n".join(all_context_segments)
 
     def generate_grounded_question(self, strategy_json, core_issue):
-        # 1. RAG: Retrieve segments from ALL databases
+        # Retrieve from ALL databases
         context = self._retrieve_combined_context(core_issue)
 
-        # 2. Safety check: If no context found
         if not context.strip():
             context = "No direct textbook reference found. Use general Socratic principles."
 
-        # 3. Prepare Prompt
+        strategy_type = strategy_json.get('strategy_type', 'Clarification')
+        strategy_steps = strategy_json.get('strategy_steps', [])
+        instructional_style = strategy_json.get('instructional_style', 'Strategic Hints')
+
         user_content = f"""
-        ---
-        TARGET TOPIC (CORE ISSUE): {core_issue}
-        ---
-        PEDAGOGICAL STRATEGY: {strategy_json.get('strategy_type', 'Socratic Questioning')}
-        REQUIRED STYLE: {strategy_json.get('instructional_style', 'Supportive')}
-        ---
-        REFERENCE TEXT FROM TEXTBOOK:
-        {context}
-        ---
-        TASK: Based on the pedagogy and textbook reference above, generate a response 
-        that guides the student toward solving the CORE ISSUE without giving away the answer.
+        CORE_ISSUE: "{core_issue}"
+        PEDAGOGICAL_MODE: "{strategy_type}"
+        INSTRUCTIONAL_STYLE: "{instructional_style}"
+        STRATEGY_STEPS: {strategy_steps}
+        REFERENCE_TEXT: \"\"\"{context}\"\"\"
         """
 
         # 4. Generate Response

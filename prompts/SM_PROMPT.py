@@ -23,99 +23,50 @@ Return strictly in JSON format. Ensure all string values in the JSON are properl
 """
 
 SM_FEW_SHOT_EXAMPLES = [
-    # --- CONCEPT: MISUNDERSTANDING ---
     {
         "role": "user", 
-        "content": "ANALYSIS: Category: Concept, Issue: 'Fundamental misunderstanding', Emotion: neutral"
+        "content": "ANALYSIS: Category: Procedure, Issue: 'Python Data Structures - Direct Inquiry (Student is seeking the specific syntax for traversing keys in a dictionary.)', Emotion: neutral"
     },
     {
         "role": "assistant", 
         "content": json.dumps({
-            "internal_logic": "Neutral emotion but fundamental misunderstanding indicates a repeating error or significant hurdle.",
-            "turn_performance": -0.1, 
+            "internal_logic": "Neutral emotion but Direct Inquiry on a procedural task indicates the student is at a starting point and needs instruction to proceed.",
+            "turn_performance": 0.0, 
             "need_more_guidance": "Yes"
         })
     },
-
-    # --- CONCEPT: BREAKTHROUGH ---
     {
         "role": "user", 
-        "content": "ANALYSIS: Category: Concept, Issue: 'Correct answer', Emotion: joy"
+        "content": "ANALYSIS: Category: Next-step, Issue: 'Vector Databases - Procedural Breakthrough (Student resolved initialization errors and is now seeking the next workflow step.)', Emotion: joy"
     },
     {
         "role": "assistant", 
         "content": json.dumps({
-            "internal_logic": "Student achieved a correct answer/breakthrough.",
+            "internal_logic": "Positive emotion combined with a 'Breakthrough' status confirms a correct execution/answer; student is ready for the next phase.",
             "turn_performance": 0.2, 
             "need_more_guidance": "No"
         })
     },
-
-    # --- CONCEPT: FRUSTRATED ---
     {
         "role": "user", 
-        "content": "ANALYSIS: Category: Concept, Issue: 'Lack of conceptual model', Emotion: frustrated"
+        "content": "ANALYSIS: Category: Concept, Issue: 'Recursion Logic - Fundamental Confusion (Student lacks a mental model for how a function can reference itself.)', Emotion: frustrated"
     },
     {
         "role": "assistant", 
         "content": json.dumps({
-            "internal_logic": "Student is frustrated and lacks a model; they are effectively stuck.",
+            "internal_logic": "Negative emotion and 'Fundamental Confusion' indicates a 'stuck' state or major misconception that prevents progress.",
             "turn_performance": -0.1, 
             "need_more_guidance": "Yes"
         })
     },
-
-    # --- PROCEDURE: SUCCESS ---
     {
         "role": "user", 
-        "content": "ANALYSIS: Category: Procedure, Issue: 'None; fixed JOIN', Emotion: joy"
+        "content": "ANALYSIS: Category: Concept, Issue: 'SQLite Primary Keys - Partial Understanding (Student identified uniqueness but missed the non-null constraint.)', Emotion: neutral"
     },
     {
         "role": "assistant", 
         "content": json.dumps({
-            "internal_logic": "Procedural fix suggests a breakthrough or correct implementation step.",
-            "turn_performance": 0.2, 
-            "need_more_guidance": "No"
-        })
-    },
-
-# --- PROCEDURE: UNCERTAINTY ---
-    {
-        "role": "user", 
-        "content": "ANALYSIS: Category: Procedure, Issue: 'CLI syntax uncertainty', Emotion: confused"
-    },
-    {
-        "role": "assistant", 
-        "content": json.dumps({
-            "internal_logic": "Confusion/uncertainty on syntax indicates a need for guidance but a minor step is being attempted.",
-            "turn_performance": 0.1, 
-            "need_more_guidance": "Yes"
-        })
-    },
-
-    # --- VAGUE/CONFUSED ---
-    {
-        "role": "user", 
-        "content": "ANALYSIS: Category: Concept, Issue: 'Unable to distinguish benefit', Emotion: confused"
-    },
-    {
-        "role": "assistant", 
-        "content": json.dumps({
-            "internal_logic": "Student is unable to distinguish core concepts; indicates a repeating error or roadblock.",
-            "turn_performance": -0.1, 
-            "need_more_guidance": "Yes"
-        })
-    },
-
-    # --- NEXT-STEP: UNSURE HOW TO PROCEED ---
-    {
-        "role": "user", 
-        "content": "ANALYSIS: Category: Next-step, Issue: 'Connecting data flow', Emotion: confused"
-    },
-    {
-        "role": "assistant", 
-        "content": json.dumps({
-            "internal_logic": "Making progress on connecting flow is a minor procedural step despite confusion.",
+            "internal_logic": "Neutral emotion with 'Partial Understanding' suggests minor progress but the student hasn't reached full conceptual mastery yet.",
             "turn_performance": 0.1, 
             "need_more_guidance": "Yes"
         })
