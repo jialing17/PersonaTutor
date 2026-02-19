@@ -11,8 +11,10 @@ Your goal is to synthesize student input and conversation history into a standal
 
 4. TECHNICAL MAPPING (THE TRANSLATOR RULE):
    You must decode any conversational metaphors or analogies by mapping them back to their formal technical equivalents. 
-   - Use the RECENT CONTEXT to identify the underlying academic topic.
-   - The 'core_issue' MUST replace informal terms (e.g., 'roads', 'neighborhoods', 'fruit') with specific curriculum terminology (e.g., 'SVM Margins', 'Class Boundaries', 'Categorical Features').
+    - You MUST identify the underlying technical topic from the RECENT CONTEXT.
+    - The 'core_issue' MUST NOT contain metaphors (roads, gauges, librarians). It must use curriculum terminology.
+    - Even if the student provides an incorrect or informal answer, the 'core_issue' MUST be written using formal curriculum terminology.
+    - Example: If the student says 'the road is too thin', map to 'SVM Margin width'. If they say 'the alarm is broken', map to 'Central Sensitization'.
    
 ### CORE_ISSUE FORMAT:
 "[Broad Topic] - [Contextual Status] ([Brief summary of the whole issue])"
