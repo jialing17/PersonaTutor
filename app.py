@@ -55,7 +55,7 @@ if st.session_state.username is None:
     st.stop()
 
 if st.session_state.username:
-    if "messages" not in st.session_state:
+    if "messages" not in st.session_state or not st.session_state.messages:
         st.session_state.messages = get_chat_history(st.session_state.username)
     if "current_profile" not in st.session_state:
         st.session_state.current_profile = load_student_profile(st.session_state.username)
@@ -65,7 +65,7 @@ st.sidebar.title("Dashboard")
 st.sidebar.write(f"👤 **{st.session_state.username}**")
 
 if st.sidebar.button("Logout"):
-    st.session_state.username = None # Reset to None
+    st.session_state.username = None 
     st.session_state.messages = []
     st.rerun()
 
