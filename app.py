@@ -54,11 +54,11 @@ if st.session_state.username is None:
     
     st.stop()
 
-if "messages" not in st.session_state:
-    st.session_state.messages = load_chat_history(st.session_state.username)
-    
-if "current_profile" not in st.session_state:
-    st.session_state.current_profile = load_student_profile(st.session_state.username)
+if st.session_state.username:
+    if "messages" not in st.session_state:
+        st.session_state.messages = get_chat_history(st.session_state.username)
+    if "current_profile" not in st.session_state:
+        st.session_state.current_profile = load_student_profile(st.session_state.username)
 
 # after login 
 st.sidebar.title("Dashboard")
@@ -70,6 +70,11 @@ if st.sidebar.button("Logout"):
     st.rerun()
 
 st.title("Socratic PersonaTutor")
+
+for msg in st.session_state.messages:
+    role = "assistant" if msg["role"] == "tutor" else msg["role"]
+    with st.chat_message(role):
+        st.markdown(msg["content"])
 
 # Display History
 for msg in st.session_state.messages:
