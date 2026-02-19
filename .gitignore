@@ -29,6 +29,7 @@ stability_results.txt
 ingestion_checkpoint_ai_modern.txt
 ingestion_checkpoint.txt
 ingestion_checkpoint_game.txt
+ingestion_checkpoint_psy.txt
 *.log
 
 # --- ingest 
@@ -40,6 +41,7 @@ ingest.py
 test_ingest.py
 ingest_all.py
 ingest_game.py
+ingest_psy.py
 
 #--- other codes
 try api.py
