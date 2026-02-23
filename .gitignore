@@ -48,5 +48,6 @@ try api.py
 stability_test.py
 archive/
 data/
+.streamlit/secrets.toml
 
 "ingest_game.py" 
