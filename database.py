@@ -59,10 +59,12 @@ def verify_user(username, password):
 
 def get_chat_history(username):
     resp = query_turso("SELECT role, content FROM history WHERE username=? ORDER BY timestamp ASC", [username])
+    print(f"DEBUG DB RESP: {resp}") 
     try:
         rows = resp["results"][0]["response"]["result"]["rows"]
         return [{"role": row[0]["value"], "content": row[1]["value"]} for row in rows]
-    except (KeyError, IndexError, TypeError):
+    except (KeyError, IndexError, TypeError) as e:
+        print(f"DB Error: {e}")
         return []
 
 def create_user(username, password):
