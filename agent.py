@@ -80,6 +80,7 @@ class QuestionUnderstandingAgent:
         1. "difficulty_category": 'Concept', 'Procedure', or 'Next-step'
         2. "core_issue": A short summary of the specific hurdle. Preferably under 15 words.
         3. "emotion": 'confused', 'frustrated', or 'neutral'
+        4. "switch_topic": 'Yes' or 'No' 
 
         Do not include justification in the JSON output.
         """
@@ -111,6 +112,7 @@ class StudentModelingAgent:
         emotion = latest_analysis_json.get('emotion', 'neutral')    
 
         if latest_analysis_json['switch_topic'] == "Yes":
+            # print("Topic switch detected. Resetting mastery to baseline for new topic.")
             old_mastery = 0.0
 
         if old_mastery == 0.0:
