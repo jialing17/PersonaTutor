@@ -58,6 +58,7 @@ if st.session_state.username is None:
 if "messages" not in st.session_state:
     history = get_chat_history(st.session_state.username)
     st.session_state.messages = history if history is not None else []
+    st.write(f"DEBUG: Loaded {len(st.session_state.messages)} messages from database")
 
 if "current_profile" not in st.session_state:
     profile = load_student_profile(st.session_state.username)

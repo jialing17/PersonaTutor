@@ -61,12 +61,18 @@ def get_chat_history(username):
     resp = query_turso("SELECT role, content FROM history WHERE username=? ORDER BY turn_id ASC", [username])
     try:
         if resp is None:
-            print(f"Database connection failed for user {username}")
+            print(f"[HISTORY DEBUG] Database connection failed for user {username}")
             return []
+        
+        print(f"[HISTORY DEBUG] Database response: {resp}")
         rows = resp["results"][0]["response"]["result"]["rows"]
-        return [{"role": row[0]["value"], "content": row[1]["value"]} for row in rows]
+        history_list = [{"role": row[0]["value"], "content": row[1]["value"]} for row in rows]
+        print(f"[HISTORY DEBUG] Loaded {len(history_list)} messages for {username}")
+        return history_list
     except Exception as e:
-        print(f"Error loading chat history for {username}: {e}")
+        print(f"[HISTORY DEBUG] Error loading chat history for {username}: {e}")
+        import traceback
+        traceback.print_exc()
         return []
 
 def create_user(username, password):
