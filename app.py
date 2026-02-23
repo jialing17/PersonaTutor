@@ -55,6 +55,7 @@ if st.session_state.username is None:
     st.stop()
 
 if st.session_state.username:
+    st.write(f"Current User in State: {st.session_state.get('username')}")
     if "messages" not in st.session_state:
         history = get_chat_history(st.session_state.username)
         st.session_state.messages = history if history else []
