@@ -137,7 +137,7 @@ SF_FEW_SHOT_EXAMPLES = [
     # --- CONCEPT: MID MASTERY + NO GUIDANCE (Guided Reflection) ---
     {
         "role": "user", 
-        "content": "ANALYSIS: mastery_level: 0.66, Guidance: No, difficulty_category: Concept, Issue: 'Machine Learning - Inquiry (Student asking difference between Supervised and Unsupervised.)'"
+        "content": "ANALYSIS: mastery_level: 0.63, Guidance: No, difficulty_category: Concept, Issue: 'Machine Learning - Inquiry (Student asking difference between Supervised and Unsupervised.)'"
     },
     {
         "role": "assistant", 

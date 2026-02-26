@@ -213,7 +213,7 @@ QU_FEW_SHOT_EXAMPLES = [
     {
     "role": "assistant", 
     "content": json.dumps({
-        "difficulty_category": "Inquiry",
+        "difficulty_category": "Concept",
         "core_issue": "Python Coding - Breakthrough (Student has mastered for-loops and is explicitly requesting a pivot to while-loops.)",
         "emotion": "joy",
         "switch_topic": "Yes", 
